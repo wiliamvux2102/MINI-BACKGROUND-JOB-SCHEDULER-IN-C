@@ -5,15 +5,10 @@
 
 typedef struct {
     int worker_id;
-
     pthread_t thread;
-
     int busy;
-
     int jobs_completed;
-
     double total_busy_time;
-
 } worker_t;
 
 void init_workers(int num_workers);
