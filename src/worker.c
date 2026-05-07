@@ -1,42 +1,39 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 #include "../include/worker.h"
 #include "../include/job.h"
-#include "../include/queue.h"
-#include "../include/synchronization.h"
+#include "../include/scheduler.h"
 
-extern queue_t ready_queue;
+extern int logger_sim_time(void);
+extern void log_worker_start(int worker_id, const job_t *job);
+extern void log_worker_finish(int worker_id, const job_t *job);
 static worker_t* workers = NULL;
 
-static void execute_job(worker_t* worker, job_t* job) {
+static void dispatcher_assign_job(worker_t* worker, job_t* job) {
     worker->busy = 1;
     job->status = JOB_RUNNING;
-    printf("[WORKER %d] Start Job %d\n", worker->worker_id, job->job_id);
+    job->start_time = logger_sim_time();
+    log_worker_start(worker->worker_id, job);
     usleep(job->estimated_runtime * 100000);
+    job->finish_time = logger_sim_time();
     job->status = JOB_DONE;
     worker->jobs_completed++;
-    printf("[WORKER %d] Finish Job %d\n", worker->worker_id, job->job_id);
+    worker->total_busy_time += job->estimated_runtime;
+    log_worker_finish(worker->worker_id, job);
     worker->busy = 0;
 }
 
 void* worker_loop(void* arg) {
     worker_t* worker = (worker_t*)arg;
-    while (system_running) {
-        pthread_mutex_lock(&queue_mutex);
-        while (queue_isempty(&ready_queue) && system_running) {
-            pthread_cond_wait(&job_available, &queue_mutex);
-        }
-        if(!system_running) {
-            pthread_mutex_unlock(&queue_mutex);
+    while (1) {
+        job_t* job = scheduler_get_next_job();
+        if (job == NULL) {
             break;
         }
-        job_t* job = dequeue(&ready_queue);
-        pthread_mutex_unlock(&queue_mutex);
-        if(job != NULL) {
-            execute_job(worker, job);
-        }
+        dispatcher_assign_job(worker, job);
     }
     return NULL;
 }
@@ -53,16 +50,13 @@ void init_workers(int num_workers)
         workers[i].worker_id = i;
         workers[i].busy = 0;
         workers[i].jobs_completed = 0;
-        pthread_create(&workers[i].thread,NULL, worker_loop, &workers[i]);
+        workers[i].total_busy_time = 0.0;
+        pthread_create(&workers[i].thread, NULL, worker_loop, &workers[i]);
     }
 }
 
 void destroy_workers(int num_workers)
 {
-    pthread_mutex_lock(&queue_mutex);
-    system_running = 0;
-    pthread_cond_broadcast(&job_available);
-    pthread_mutex_unlock(&queue_mutex);
     for(int i = 0; i < num_workers; i++) {
         pthread_join(workers[i].thread, NULL);
     }

@@ -1,0 +1,50 @@
+[time=0] Worker 0 starts Job 1 seller=A runtime=7 priority=4
+[time=1] Worker 1 starts Job 2 seller=E runtime=4 priority=4
+[time=2] Worker 2 starts Job 3 seller=D runtime=6 priority=4
+[time=5] Worker 3 starts Job 4 seller=B runtime=7 priority=4
+[time=5] Worker 1 finishes Job 2 seller=E runtime=4 priority=4
+[time=5] Worker 1 starts Job 5 seller=D runtime=5 priority=4
+[time=7] Worker 0 finishes Job 1 seller=A runtime=7 priority=4
+[time=7] Worker 0 starts Job 6 seller=E runtime=4 priority=4
+[time=10] Worker 2 finishes Job 3 seller=D runtime=6 priority=4
+[time=10] Worker 2 starts Job 17 seller=D runtime=3 priority=1
+[time=12] Worker 1 finishes Job 5 seller=D runtime=5 priority=4
+[time=12] Worker 1 starts Job 7 seller=B runtime=4 priority=3
+[time=12] Worker 0 finishes Job 6 seller=E runtime=4 priority=4
+[time=12] Worker 0 starts Job 14 seller=C runtime=4 priority=1
+[time=12] Worker 3 finishes Job 4 seller=B runtime=7 priority=4
+[time=12] Worker 3 starts Job 8 seller=C runtime=4 priority=4
+[time=14] Worker 2 finishes Job 17 seller=D runtime=3 priority=1
+[time=14] Worker 2 starts Job 16 seller=B runtime=2 priority=1
+[time=16] Worker 2 finishes Job 16 seller=B runtime=2 priority=1
+[time=16] Worker 2 starts Job 9 seller=C runtime=4 priority=3
+[time=16] Worker 1 finishes Job 7 seller=B runtime=4 priority=3
+[time=16] Worker 1 starts Job 12 seller=D runtime=4 priority=1
+[time=16] Worker 0 finishes Job 14 seller=C runtime=4 priority=1
+[time=16] Worker 0 starts Job 18 seller=C runtime=4 priority=1
+[time=16] Worker 3 finishes Job 8 seller=C runtime=4 priority=4
+[time=16] Worker 3 starts Job 10 seller=B runtime=7 priority=3
+[time=20] Worker 2 finishes Job 9 seller=C runtime=4 priority=3
+[time=20] Worker 2 starts Job 11 seller=D runtime=3 priority=1
+[time=20] Worker 1 finishes Job 12 seller=D runtime=4 priority=1
+[time=20] Worker 1 starts Job 13 seller=D runtime=2 priority=1
+[time=20] Worker 0 finishes Job 18 seller=C runtime=4 priority=1
+[time=20] Worker 0 starts Job 15 seller=B runtime=2 priority=1
+[time=22] Worker 1 finishes Job 13 seller=D runtime=2 priority=1
+[time=22] Worker 1 starts Job 19 seller=A runtime=3 priority=1
+[time=22] Worker 0 finishes Job 15 seller=B runtime=2 priority=1
+[time=22] Worker 0 starts Job 20 seller=C runtime=2 priority=1
+[time=23] Worker 2 finishes Job 11 seller=D runtime=3 priority=1
+[time=23] Worker 3 finishes Job 10 seller=B runtime=7 priority=3
+[time=24] Worker 0 finishes Job 20 seller=C runtime=2 priority=1
+[time=25] Worker 1 finishes Job 19 seller=A runtime=3 priority=1
+
+Policy: FIFO
+Workers: 4
+Total jobs: 20
+Average waiting time: 5.90
+Average turnaround time: 10.25
+Throughput: 0.800 jobs/unit time
+Worker utilization: 81.00%
+Starvation-risk jobs: 6
+

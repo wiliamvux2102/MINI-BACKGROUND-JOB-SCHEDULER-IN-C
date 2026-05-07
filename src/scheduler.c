@@ -13,6 +13,8 @@ static int insert_locked(policy_t policy, job_t *j) {
             return enqueue(&ready_queue, j);
         case POLICY_SJF:
             return sorted_insert_sjf(&ready_queue, j);
+        case POLICY_PRIORITY:
+            return sorted_insert_priority(&ready_queue, j);
         default:
             return 0;
     }
@@ -64,18 +66,16 @@ int scheduler_add_job(policy_t policy, job_t *j) {
     return ok;
 }
 
-job_t *scheduler_get_next_job(policy_t policy) {
-    (void)policy; 
-
+job_t *scheduler_get_next_job(void) {
     if (!initialized) return NULL;
 
     pthread_mutex_lock(&ready_mutex);
 
-    while (queue_is_empty(&ready_queue) && !closed) {
+    while (queue_isempty(&ready_queue) && !closed) {
         pthread_cond_wait(&job_available, &ready_mutex);
     }
 
-    if (queue_is_empty(&ready_queue) && closed) {
+    if (queue_isempty(&ready_queue) && closed) {
         pthread_mutex_unlock(&ready_mutex);
         return NULL;
     }

@@ -18,13 +18,14 @@ typedef struct {
 void queue_init(queue_t * q);
 void queue_destroy(queue_t * q);
 
-int queue_isempty(const queue_t * q) { return !q || q->size == 0; } // return 1/0 for true/false
-size_t queue_size(const queue_t * q) { return (q ? q->size: 0); }
+static inline int queue_isempty(const queue_t * q) { return !q || q->size == 0; } // return 1/0 for true/false
+static inline size_t queue_size(const queue_t * q) { return (q ? q->size: 0); }
 
 int enqueue(queue_t *q, job_t * j); // return 1 if success
 job_t * dequeue (queue_t * q);
 
 int sorted_insert_sjf(queue_t * q, job_t * j);
+int sorted_insert_priority(queue_t * q, job_t * j);
 
 #endif
 

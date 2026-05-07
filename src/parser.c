@@ -32,7 +32,6 @@ int parse_jobs_from_csv(const char* filename, job_t* jobs) {
         // Remove newline (\r\n or \n)
         line[strcspn(line, "\r\n")] = 0;
 
-        // parser
         int parsed = sscanf(line, "%d,%31[^,],%d,%d,%d,%63[^\n]",
                &jobs[job_count].job_id,
                jobs[job_count].seller_id,
@@ -70,28 +69,4 @@ void print_jobs_array(job_t* jobs, int count) {
                jobs[i].job_type);
     }
     printf("+----+------+--------+---------+----------+--------------------+\n");
-}
-
-int main(int argc, char *argv[]) {
-    // passing path_to_csv_file
-    if (argc < 2) {
-        fprintf(stderr, "Usage: %s <path_to_csv_file>\n", argv[0]);
-        fprintf(stderr, "Example: %s workload_a.csv\n", argv[0]);
-        return EXIT_FAILURE;
-    }
-
-    const char* filename = argv[1];
-    job_t jobs[MAX_JOBS];
-    
-    printf("[+] Parsing file: %s\n", filename);
-    int count = parse_jobs_from_csv(filename, jobs);
-    
-    if (count > 0) {
-        printf("[+] Successfully parsed %d jobs.\n", count);
-        print_jobs_array(jobs, count);
-    } else {
-        printf("[-] No valid jobs found or error reading file.\n");
-    }
-
-    return EXIT_SUCCESS;
 }
